@@ -76,9 +76,10 @@ def getClassWeights(keysToWeigh):
 #####------------Load from the dataset-----------------######
 np.random.seed()
 
-dataDir = "/content/gdrive/MyDrive/GEM5_experiments/data/cw_f303_6000_shuffle_stdScaler_1024/" ##keys-> data
+#dataDir = "/content/gdrive/MyDrive/GEM5_experiments/data/cw_f303_6000_shuffle_stdScaler_1024/" ##keys-> train, dev
+dataDir = "/content/gdrive/MyDrive/GEM5_experiments/data/cw_f415_stdScalar_1024/" ##keys-> data
 
-filesPerStep = 4 ##This is the number of files to take per step
+filesPerStep = 1 ##This is the number of files to take per step
 training_files = [x for x in glob.glob(dataDir + '/train_*.npz')]
 #training_generator = classify_general.DataGenerator(training_files, batch_size=2, random_state=np.random.randint(1,1000), typeOfData="train", typeOfModel=modelType)
 training_generator = classify_general.DataGenerator(training_files, batch_size=filesPerStep, random_state=np.random.randint(1,1000), typeOfData="data", typeOfModel=modelType)
@@ -136,7 +137,7 @@ elif (modelType == "CNN"):
 	isMaxPool = [1, 1, 1]
 	maxPoolSizes = [2, 2, 2]
 
-	denseList = [1024, 1024, 1024]
+	denseList = [1024, 1024, 512]
 	denseActs = ['elu', 'elu', 'elu'] 
 	denseDropouts = [0.1, 0.1, 0.1]
 
@@ -170,8 +171,8 @@ else:
 
 ## when dataEnsemble is used
 #MrunLogsPath = "/xdisk/tosiron/manojgopale/extra/gem5KeyPrediction/log/dataEnsemble/allRuns.csv"
-runLogsPath = "/content/gdrive/MyDrive/Colab_dir/Colab_Repo/CW_code/result/allRuns.csv"
-with open(runLogsPath, 'w') as f: ##NOTE: Change the attribute to 'a' after first run
+runLogsPath = resultDir + "/allRuns.csv"
+with open(runLogsPath, 'a') as f: ##NOTE: Change the attribute to 'a' after first run
 	## modelName must be unique like run_<someNum>
 	if(modelType=="FNN"):
 		f.write("\n%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n" %(modelName, numHiddenLayers, hiddenLayer, actList, dropList, batchNorm, batchSize, trainSize, typeOfStd, chipType, keysToWeigh))
