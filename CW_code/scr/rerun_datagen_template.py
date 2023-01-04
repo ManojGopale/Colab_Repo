@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, '/xdisk/tosiron/manojgopale/extra/keyPrediction_chip/scr/moreDataTrials/scr/')
+sys.path.insert(0, '/content/gdrive/MyDrive/Colab_dir/Colab_Repo/CW_code/scr/')
 import classify_general
 import time
 import numpy as np
@@ -26,7 +26,7 @@ parser.add_option('--trainSize',
 parser.add_option('--devSize',
 									action = 'store', type='int', dest='devSize', default = 7500)
 parser.add_option('--resultDir',
-									action = 'store', type='string', dest='resultDir', default = '/xdisk/tosiron/manojgopale/extra/keyPrediction_chip/scr/moreDataTrials/result/')
+									action = 'store', type='string', dest='resultDir', default = '/content/gdrive/MyDrive/Colab_dir/Colab_Repo/CW_code/result/')
 parser.add_option('--modelName',
 									action = 'store', type='string', dest='modelName', default = 'chipWhispererModel')
 parser.add_option('--trainFlag',
@@ -76,9 +76,7 @@ def getClassWeights(keysToWeigh):
 #####------------Load from the dataset-----------------######
 np.random.seed()
 
-dataDir = "/xdisk/tosiron/manojgopale/xdisk/gem5DataCollection/cw_f415_6000_stdScaler_1024/" ##keys-> data
-#dataDir = "/xdisk/tosiron/manojgopale/xdisk/gem5DataCollection/cw_f303_6000_shuffle_stdScaler_1024/" ##keys-> train, dev
-#dataDir = "/xdisk/tosiron/manojgopale/xdisk/gem5DataCollection/cw_f303_6000_shuffle_onlyMean_1024/" ##keys-> data
+dataDir = "/content/gdrive/MyDrive/GEM5_experiments/data/cw_f303_6000_shuffle_stdScaler_1024/" ##keys-> data
 
 filesPerStep = 4 ##This is the number of files to take per step
 training_files = [x for x in glob.glob(dataDir + '/train_*.npz')]
@@ -172,8 +170,8 @@ else:
 
 ## when dataEnsemble is used
 #MrunLogsPath = "/xdisk/tosiron/manojgopale/extra/gem5KeyPrediction/log/dataEnsemble/allRuns.csv"
-runLogsPath = "/xdisk/tosiron/manojgopale/extra/keyPrediction_chip/scr/moreDataTrials/log/allRuns.csv"
-with open(runLogsPath, 'a') as f:
+runLogsPath = "/content/gdrive/MyDrive/Colab_dir/Colab_Repo/CW_code/result/allRuns.csv"
+with open(runLogsPath, 'w') as f: ##NOTE: Change the attribute to 'a' after first run
 	## modelName must be unique like run_<someNum>
 	if(modelType=="FNN"):
 		f.write("\n%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n" %(modelName, numHiddenLayers, hiddenLayer, actList, dropList, batchNorm, batchSize, trainSize, typeOfStd, chipType, keysToWeigh))
@@ -234,7 +232,7 @@ epochs=8
 hist = model.fit(training_generator, \
 								epochs=epochs, \
 								validation_data=validation_generator, \
-								callbacks=[csv_logger, modelCheckpoint, tensorboard_cb], 
+								callbacks=[csv_logger, modelCheckpoint], 
 								shuffle = True,\
 								class_weight=getClassWeights(keysToWeigh),\
 								verbose=1)
