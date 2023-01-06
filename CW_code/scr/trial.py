@@ -3,14 +3,14 @@ import numpy as np
 print("Hello World!!!")
 
 def fun():
-  print()
+    print()
 
 def fun2():
-    print()
+        print()
 
 def fun3():
-  print()
+    print()
 
 def fun4():
-    print()
+        print()
 
